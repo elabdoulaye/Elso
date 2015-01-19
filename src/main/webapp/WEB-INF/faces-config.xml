@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+
+     <application>        
+        <locale-config>
+            <default-locale>fr</default-locale>
+        </locale-config>
+        <resource-bundle>
+            <base-name>messages</base-name>
+            <var>msgs</var>
+        </resource-bundle>         
+    </application>
+    <managed-bean>
+        <managed-bean-name>personneCtrl</managed-bean-name>
+        <managed-bean-class>com.elso.controller.PersonneCtrl</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+        <managed-bean>
+        <managed-bean-name>credentials</managed-bean-name>
+        <managed-bean-class>com.elso.controller.Credentials</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+        <managed-bean>
+        <managed-bean-name>authBackingCtrl</managed-bean-name>
+        <managed-bean-class>com.elso.controller.AuthBackingCtrl</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    <lifecycle>
+        <phase-listener>com.elso.listener.LifeCycleListener</phase-listener>
+    </lifecycle>
+</faces-config>

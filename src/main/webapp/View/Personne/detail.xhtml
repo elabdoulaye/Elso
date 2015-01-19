@@ -1,0 +1,62 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:h="http://java.sun.com/jsf/html"
+            xmlns:f="http://java.sun.com/jsf/core"
+            xmlns:ui="http://java.sun.com/jsf/facelets"
+            xmlns:p="http://primefaces.org/ui">
+
+		<h:form id="frmDetailPersonne">
+			<p:dialog header="Detail Personne" widgetVar="detailPersonneDialog"  id="idDetailPersonne"
+                                  showEffect="fade" hideEffect="explode" closable="true" height="65%" width="30%" modal="true">
+				<p:outputPanel id="detailPersonnePanel">
+			
+					<h:panelGrid columns="2" cellpadding="5" cellspacing="18">
+	
+                                            <h:inputHidden value="#{personneCtrl.personneModel.id}" rendered="false" />
+	
+						<h:outputText value="#{msgs.personne_nom} : " />
+                                                <h:outputText value="#{personneCtrl.personneModel.nom}" />
+						
+						<h:outputText value="#{msgs.personne_prenom} : " />
+                                                <h:outputText value="#{personneCtrl.personneModel.prenom}" />
+						
+                                                <h:outputText value="#{msgs.personne_statut} : " />
+                                                <h:outputText value="#{personneCtrl.personneModel.statut}" />
+						
+					</h:panelGrid>
+						
+					
+					
+					<h:panelGroup styleClass="positionBouton">
+							<p:commandButton value="#{msgs.bouton_modifier}"
+								update=":#{p:component('editPersonnePanel_1')}" process="@this"
+								oncomplete="PF('detailPersonneDialog').hide(), PF('editPersonneDialog_1').show();">
+	<!-- 							<f:setPropertyActionListener value="#{niveau}" target="#{niveauBean.niveau}"></f:setPropertyActionListener> -->
+							</p:commandButton>	
+						<p:commandButton value="#{msgs.bouton_supprimer}" process="@this"
+							oncomplete="PF('confirmation').show();PF('detailPersonneDialog').hide();">
+ 							<f:setPropertyActionListener value="#{niveau}" target="#{niveauBean.niveau}"></f:setPropertyActionListener> 
+						</p:commandButton>	
+						<p:commandButton value="#{msgs.bouton_annuler}"
+							update="@form" process="@this" oncomplete="PF('detailPersonneDialog').hide()" />
+					</h:panelGroup>
+				</p:outputPanel>
+			</p:dialog>	
+	      
+		    <p:confirmDialog id="confirmDialog" message="#{msgs.confirmation_suppression_message}"  
+		                header="#{msgs.confirmation_suppression_header}" severity="alert" widgetVar="confirmation">  
+		                  
+				<p:commandButton id="confirm" value="#{msgs.bouton_oui}" oncomplete="PF('confirmation').hide(),PF('detailPersonneDialog').hide();"
+					ajax="true" update=":#{p:component('outputPanelPersonneList')}"
+					icon="ui-icon-close"
+					title="#{msgs.title_supprimer}" 
+					actionListener="#{personneCtrl.deleteAction}">
+                                    <f:param name="personneId" value="#{personneCtrl.personneModel.id}" />
+				</p:commandButton>					
+		                    
+		        <p:commandButton id="decline" value="#{msgs.bouton_non}" 
+		        	onclick="PF('confirmation').hide()" type="button" />   
+		                  
+		    </p:confirmDialog>  
+		</h:form>
+
+</ui:composition>

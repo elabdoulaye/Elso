@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="frmEditPersonne">
+        <p:dialog id="idEditPersonneDialog" header="#{personneCtrl.personneModel.id == null ? 'Enregistrement Nouvelle Personne' : 'Modification Personne'}" widgetVar="editPersonneDialog" 
+                  closable="false" height="30%" width="auto" modal="true">
+            <p:outputPanel id="editPersonnePanel">
+
+                <p:messages id="msgs"/>
+                <p:growl id="messages"/>	
+                <h:panelGrid columns="2" cellpadding="5" cellspacing="5">
+
+                    <h:inputHidden value="#{personneCtrl.personneModel.id}" rendered="false" />
+
+
+                    <h:outputLabel for="nom" value="#{msgs.personne_nom} : " />
+                    <p:inputText id="nom" value="#{personneCtrl.personneModel.nom}"  size="50" required="true" label="#{msgs.personne_nom}" />
+                    <h:outputLabel for="prenom" value="#{msgs.personne_prenom} : " />
+                    <p:inputText id="prenom" value="#{personneCtrl.personneModel.prenom}"  size="50" required="true" label="#{msgs.personne_prenom}" />
+                    <h:outputLabel for="statut" value="#{msgs.personne_statut} : " />
+                    <p:inputText id="statut" value="#{personneCtrl.personneModel.prenom}"  size="50" required="true" label="#{msgs.personne_statut}" />
+
+                </h:panelGrid>
+
+
+                <h:panelGroup styleClass="positionBouton" style="align:center;">
+                    <p:commandButton value="#{msgs.bouton_valider}"
+                                     actionListener="#{personneCtrl.saveAction}"
+                                     update=":#{p:component('outputPanelPersonneList')}, msgs, messages"
+                                     oncomplete="if(!args.validationFailed) editPersonneDialog.hide()" rendered="#{personneCtrl.personneModel.id == null}"/>
+                    <p:commandButton value="#{msgs.bouton_modifier}"
+                                     actionListener="#{personneCtrl.updateAction}"
+                                     update=":#{p:component('outputPanelPersonneList')}, msgs, messages"
+                                     oncomplete="if(!args.validationFailed) editPersonneDialog.hide()" rendered="#{personneCtrl.personneModel.id != null}" />
+                    <p:commandButton value="#{msgs.bouton_annuler}"
+                                     oncomplete="editPersonneDialog.hide()" process="@this">
+                        <p:resetInput target="editPersonnePanel" />
+                    </p:commandButton>    
+                </h:panelGroup>
+
+            </p:outputPanel>
+        </p:dialog>	
+    </h:form>
+
+</ui:composition>

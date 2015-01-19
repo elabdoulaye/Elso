@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view contentType="text/html">
+
+
+	<h:head>
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Test Maven</title>
+		</f:facet>
+
+		<link type="text/css" rel="stylesheet"
+			href="#{request.contextPath}/styles/style.css" />
+			
+		<script type="text/javascript">
+			//<![CDATA[
+			PrimeFaces.locales["#{agendaBean.language}"] = {
+				closeText : 'Fermer',
+				prevText : 'Précédent',
+				nextText : 'Suivant',
+				monthNames : [ 'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre' ],
+				monthNamesShort : [ 'Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc' ],
+				dayNames : [ 'Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi',	'Vendredi', 'Samedi' ],
+				dayNamesShort : [ 'Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven',	'Sam' ],
+				dayNamesMin : [ 'D', 'L', 'M', 'M', 'J', 'V', 'S' ],
+				weekHeader : 'Semaine',
+				firstDay : 1,
+				isRTL : false,
+				showMonthAfterYear : false,
+				yearSuffix : '',
+				timeOnlyTitle : 'Choisir l\'heure',
+				timeText : 'Heure',
+				hourText : 'Heures',
+				minuteText : 'Minutes',
+				secondText : 'Secondes',
+				currentText : 'Maintenant',
+				ampm : false,
+				month : 'Mois',
+				week : 'Semaine',
+				day : 'Jour',
+				allDayText : 'Toute la journée'		   
+			};  
+			//]]>			
+		</script>  			
+				
+	</h:head>
+
+	<h:body>
+
+		<p:layout fullPage="true">
+
+			<p:layoutUnit position="north" size="auto" resizable="true" styleClass="ui-widget-content-unit">
+				<h:form>
+					<ui:insert name="header">
+						<ui:include src="/template/header.xhtml" />
+					</ui:insert>
+					<ui:insert name="menu"></ui:insert>
+				</h:form>
+			</p:layoutUnit>
+
+			<p:layoutUnit position="south" size="20" resizable="true">
+				<ui:insert name="footer">
+					<ui:include src="/template/footer.xhtml" />
+				</ui:insert>
+			</p:layoutUnit>
+<!--
+			<p:layoutUnit position="west" size="auto" resizable="true">
+				<ui:insert name="menu">
+					<ui:include src="/template/menu.xhtml" />
+				</ui:insert>
+			</p:layoutUnit>
+
+
+ 			<p:layoutUnit position="east" size="200" resizable="true">
+				<ui:insert name="menuright">
+					<h:outputText value="Right unit content." />
+				</ui:insert>
+			</p:layoutUnit>
+ -->
+			<p:layoutUnit position="center" styleClass="ui-widget-content-unit" >
+				<ui:insert name="center">
+           			This fullPage layout consists of five different layoutUnits which are resizable and closable by default.  
+				</ui:insert>
+			</p:layoutUnit>
+
+		</p:layout>
+		
+		<ui:insert name="dialogs"></ui:insert>
+
+	</h:body>
+
+</f:view>
+
+
+</html>

@@ -1,0 +1,13 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <h:panelGrid columns="1" styleClass="sub-menu-background">
+        <h:panelGrid columns="6" id="frmListModuleParametrage" style="margin-left:0px" 
+                     cellpadding="5" cellspacing="1">
+            <p:button value="#{msgs.label_menu_personne}" title="#{msgs.label_menu_personne}" styleClass="#{menuleft == 'personne' ? 'ui-state-highlight ui-priority-primary' : ''}" icon="ui-icon-tag" outcome="/View/Personne/list.xhtml" />
+
+        </h:panelGrid>
+    </h:panelGrid>
+</ui:composition>

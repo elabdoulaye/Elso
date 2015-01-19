@@ -1,0 +1,149 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                template="/template/index.xhtml">
+
+    <ui:define name="header">
+        <ui:include src="/template/header.xhtml">
+            <ui:param name="onglet" value="accueil"></ui:param>
+        </ui:include>
+    </ui:define>
+
+    <ui:define name="menu">
+        <ui:include src="/View/menu.xhtml">
+            <ui:param name="menuleft" value="personne"></ui:param>
+        </ui:include>
+    </ui:define>
+
+    <ui:define name="center">
+        <h:form id="frmPersonneList"> 
+            <p:growl id="growl"></p:growl>
+            <p:panel header="Recherche multi criteres" toggleable="true" collapsed="true">
+                <h:panelGrid columns="8" style="width: 60%"  cellspacing="5">
+                    <h:outputLabel for="personnenom" value="#{msgs.personne_nom} : " />
+                    <p:inputText id="personnenom" value="#{personneCtrl.personneFilter.nom}" size="40" />
+
+                    <h:outputLabel for="personneprenom" value="#{msgs.personne_prenom}:" />
+                    <p:inputText id="personneprenom" value="#{personneCtrl.personneFilter.prenom}" size="40" />
+
+
+                    <h:outputLabel for="personnestatut" value="#{msgs.personne_statut}:" />
+                    <p:inputText id="personnestatut" value="#{personneCtrl.personneFilter.statut}" size="40" />
+
+                    <h:outputText value="" />
+                    <p:commandButton id="recherche" value="#{msgs.bouton_rechercher}"
+                                     ajax="true" update=":#{p:component('outputPanelPersonneList')} @parent"
+                                     icon="ui-icon-search"
+                                     title="#{msgs.title_rechercher}"
+                                     oncomplete="if(args.emptyRecords) PF('emptyDialog').show();"
+                                     actionListener="#{personneCtrl.searchAction}"/>
+
+                </h:panelGrid>
+            </p:panel>
+
+            <p:outputPanel id="outputPanelPersonneList">  
+                <p:dataTable id="tbPersonneList" 
+                             value="#{personneCtrl.personneList}" 
+                             rowStyleClass="#{personneCtrl.personneModel.id==personne.id ? 'row-updated' : ''}"
+                             resizableColumns="#{not empty personneCtrl.personneList}" widgetVar="personneTable"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="#{msgs.label_affichage} {startRecord} - {endRecord} #{msgs.label_de} {totalRecords}"  
+                             var="personne" paginatorPosition="bottom" rows="10" paginator="true">
+                    <p:column filterBy="#{personne.nom}" sortBy="#{personne.nom}" filterMatchMode="contains" >
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.personne_nom}" />
+                        </f:facet>
+                        <h:outputText value="#{personne.nom}" />
+                    </p:column>
+                    <p:column sortBy="#{personne.prenom}" filterBy="#{personne.prenom}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.personne_prenom}" />
+                        </f:facet>
+                        <h:outputText value="#{personne.prenom}" />
+                    </p:column>
+                    <p:column sortBy="#{personne.statut}" filterBy="#{personne.statut}">
+                        <f:facet name="header">
+                            <h:outputText value="#{msgs.personne_statut}" />
+                        </f:facet>
+                        <h:outputText value="#{personne.statut}" />
+                    </p:column>
+                    <p:column exportable="false" width="7%">
+                        <f:facet name="header">
+                            <h:outputText value="Actions" />
+                        </f:facet>
+                        <p:commandLink style="width: 18px; height: 18px"
+                                       ajax="true" update=":#{p:component('detailPersonnePanel')} :#{p:component('outputPanelPersonneList')}"
+                                       title="#{msgs.title_detail}" oncomplete="PF('detailPersonneDialog').show();">
+                            <f:setPropertyActionListener value="#{personne}" target="#{personneCtrl.personneModel}"></f:setPropertyActionListener>
+                            <h:graphicImage value="/images/icones/rechercher.gif" width="15" height="15"/>
+                        </p:commandLink>					
+                        <p:commandLink style="width: 18px; height: 18px"
+                                       ajax="true" update=":#{p:component('editPersonnePanel_1')} :#{p:component('idEditPersonneDialog_1')} :#{p:component('outputPanelPersonneList')}"
+                                       title="#{msgs.title_modifier}"
+                                       oncomplete="PF('editPersonneDialog_1').show()">
+                            <f:setPropertyActionListener value="#{personne}" target="#{personneCtrl.personneModel}"></f:setPropertyActionListener>
+                            <h:graphicImage value="/images/icones/modifier.gif" width="15" height="15"/>
+                        </p:commandLink>					
+
+                        <p:commandLink style="width: 18px; height: 18px"
+                                       ajax="true" update=":#{p:component('confirmDialog')} :#{p:component('outputPanelPersonneList')}"
+                                       title="#{msgs.title_supprimer}" 
+                                       actionListener="#{personneCtrl.getAction}"
+                                       oncomplete="PF('confirmation').show();">
+                            <f:setPropertyActionListener value="#{personne}" target="#{personneCtrl.personneModel}"></f:setPropertyActionListener>
+                            <f:param name="personneId" value="#{personne.id}" />
+                            <h:graphicImage value="/images/icones/supprimer.gif" width="15" height="15"/>
+                        </p:commandLink>					
+                    </p:column>
+
+                    <f:facet name="header">   
+                        <p:commandButton id="toggler" type="button" value="#{msgs.title_colonne}" style="float:right" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="tbPersonneList" trigger="toggler" />
+                        <p:commandButton id="addNewPersonne" value="#{msgs.title_personne_nouveau}" icon="ui-icon-circle-plus" style="float: left"
+                                         update=":#{p:component('editPersonnePanel_1')} :#{p:component('idEditPersonneDialog_1')}"
+                                         action="#{personneCtrl.viewPersonne}" oncomplete="PF('editPersonneDialog_1').show();" /> 
+
+                        <p:spacer width="5%" height="20" />
+                        <h:outputText value="#{msgs.title_liste_liste}" style="font-size:14px" />  
+                        <p:spacer width="30%" height="20" />
+                        <p:outputPanel style="text-align: right;">  
+                            <h:outputText value="#{msgs.label_recherche_mots_cles} : " />  
+                            <p:inputText id="globalFilter" onkeyup="PF('personneTable').filter()" style="width:200px" />  
+                        </p:outputPanel>  
+                    </f:facet>
+
+                </p:dataTable>
+                <p:blockUI block="tbPersonneList" trigger="recherche">
+                    LOADING<br />
+                    <p:graphicImage value="/images/ajaxloadingbar.gif"/>
+                </p:blockUI>
+            </p:outputPanel>
+        </h:form>
+        <!--   <ui:include src="/View/Personne/create.xhtml"></ui:include>       -->
+    </ui:define>
+    <ui:define name="dialogs">
+        <h:form>
+            <p:confirmDialog id="confirmDialog" message="#{msgs.confirmation_suppression_message}"  
+                             header="#{msgs.confirmation_suppression_header}" severity="alert" widgetVar="confirmation">  
+
+                <p:commandButton id="confirm" value="#{msgs.bouton_oui}" oncomplete="PF('confirmation').hide();"
+                                 ajax="true" update=":#{p:component('outputPanelPersonneList')}"
+                                 icon="ui-icon-close"
+                                 title="#{msgs.title_supprimer}" 
+                                 actionListener="#{personneCtrl.deleteAction}">
+                    <f:param name="personneId" value="#{param['personneId']}" />
+<!--                                 <f:param name="personneId" value="#{personne.id}" />-->
+                </p:commandButton>					
+
+                <p:commandButton id="decline" value="#{msgs.bouton_non}" 
+                                 onclick="PF('confirmation').hide();" type="button" />   
+
+            </p:confirmDialog>  
+            <ui:include src="/View/Personne/create_1.xhtml"></ui:include>
+            <ui:include src="/View/Personne/detail.xhtml"></ui:include>
+            <ui:include src="/View/empty.xhtml"></ui:include>
+        </h:form>
+    </ui:define>
+</ui:composition>
